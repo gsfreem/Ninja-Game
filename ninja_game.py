@@ -12,20 +12,34 @@ class Game:
         self.player = pygame.image.load('data/images/entities/player.png')
         self.player.set_colorkey((0, 0, 0))
         self.player_position = [300, 200]
-        self.movement = [0, 0, 0, 0]  
+        self.movement = [0, 0, 0, 0]
+
+        self.collision_area = pygame.Rect(50, 50, 300, 50)
     
     def run(self):
         while True:
+            #background color
             self.screen.fill((14, 219, 248))
+
+
+            #collision area
+            player_r = pygame.Rect(self.player_position[0], self.player_position[1], self.player.get_width(), self.player.get_height())
+            if player_r.colliderect(self.collision_area):
+                pygame.draw.rect(self.screen, (0, 100, 255), self.collision_area)
+            else:
+                pygame.draw.rect(self.screen, (0, 50, 155), self.collision_area)
+
+            # player image
             self.screen.blit(self.player, self.player_position)
             self.player_position[1] += (self.movement[1] - self.movement[0]) * 2
             self.player_position[0] += (self.movement[3] - self.movement[2]) * 2
-            self.screen.blit(self.player, self.player_position)
+
+            
+            
             
             pygame.display.update()
             self.clock.tick(60)
             
-
             # Event handler
             for event in pygame.event.get():
                 
@@ -79,5 +93,3 @@ class Game:
 
 ninja_game = Game()
 ninja_game.run()
-            
-        
